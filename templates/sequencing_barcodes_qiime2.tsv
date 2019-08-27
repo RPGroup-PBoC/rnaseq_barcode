@@ -1,0 +1,4 @@
+id	barcode-sequence
+#q2:types	categorical
+example-index-1	CAGTACAT
+example-index-2	ACTAGCAT
