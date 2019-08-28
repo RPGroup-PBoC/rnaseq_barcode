@@ -60,6 +60,7 @@ graphicspath.tex
 *.ipynb_checkpoints*
 **/.ipynb_checkpoints/
 *pycache*
+rnaseq_barcode.egg-info/
 
 # Ignore pickle files
 *.pkl
@@ -67,5 +68,6 @@ graphicspath.tex
 
 # Local directories to ignore
 data/raw_sequencing
+data/demux_sequencing
 _site/
 library.bib
