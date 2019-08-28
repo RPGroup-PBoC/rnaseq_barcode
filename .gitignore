@@ -69,5 +69,6 @@ rnaseq_barcode.egg-info/
 # Local directories to ignore
 data/raw_sequencing
 data/demux_sequencing
+data/processed_sequencing
 _site/
 library.bib
