@@ -7,13 +7,14 @@ import glob
 #%% 
 # Date for sequencing run
 DATE = 20190821
+# Description to be attached to folder names
+DESCRIPTION = '_operator_library_mapping/'
 
 # Conda environment name where qiime2 is installed
 CONDA_ENV = 'qiime2'
 
 # Path containing all raw input information
-INPUT_DIR = '../../../data/raw_sequencing/' +\
-            '20190821_operator_library_mapping/'
+INPUT_DIR = '../../../data/raw_sequencing/' + f'{DATE}{DESCRIPTION}'
 
 # Path containing raw input sequences
 RAW_DIR = INPUT_DIR + 'miseq_output/Data/Intensities/BaseCalls/'
@@ -24,7 +25,7 @@ BARCODE_LIST = INPUT_DIR + 'sequencing_barcodes_qiime2.tsv'
 
 # Path to output folder
 OUTPUT_DIR = '../../../data/demux_sequencing/' +\
-             f'{DATE}_operator_library_mapping/'
+             f'{DATE}{DESCRIPTION}'
 # Define temporary directory
 TMP_DIR = OUTPUT_DIR + 'tmp/'
 # Define diretory to save all of qiime2 files
