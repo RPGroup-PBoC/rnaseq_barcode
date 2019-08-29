@@ -35,8 +35,6 @@ for group, seq in seq_group:
     in2 = f'{INPUT_DIR}{reverse}'  # reverse input read
 
     # Define outputs
-    out1 = f'{OUTPUT_DIR}{forward}'  # forward output read
-    out2 = f'{OUTPUT_DIR}{reverse}'  # reverse output read
     merged_out = f'{OUTPUT_DIR}{group}_merged.fastq.gz'  # merged reads
     html_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.html'
     json_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.json'
@@ -46,20 +44,19 @@ for group, seq in seq_group:
     fastp = f'''fastp \
         --in1 {in1} \
         --in2 {in2} \
-        --out1 {out1} \
-        --out2 {out2} \
         --merge \
         --merged_out {merged_out} \
         --include_unmerged \
-        --detect_adapter_for_pe \
         --verbose \
         --disable_length_filtering \
         --correction \
         --html {html_report} \
         --json {json_report} \
         --report_title "{html_report}" \
-        --max_len1 121
-        --max_len2 121
+        --max_len1 113 \
+        --max_len2 113 \
+        --overlap_len_require 103 \
+        --overlap_diff_percent_limit 5
     '''
 
     # Run program
