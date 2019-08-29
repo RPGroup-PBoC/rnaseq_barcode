@@ -30,7 +30,6 @@ This is our very first sequencing run. We were helped by Jeff Park from the
 Thomson lab. He taught us how to operate the MiSeq and how to load the samples
 into the machine
 
-
 ## Library Preparation
 
 1. The general idea behind this barcode mapping run is that we have different
@@ -93,3 +92,26 @@ into the machine
 17. Purified, indexed libraries were quantified on a Qubit fluorometer and
     normalized according to Illumina MiSeq standard 'DNA Library Preparation'
     instructions.
+
+## Scripts
+
+1. `demultiplex_seq.py` : takes the raw sequences as given by the MiSeq and
+   demultiplex them based on the two index we used as an internal control for
+   technical replicas using `qiime2`.
+   - **output**
+```
++---data
+    +---demux_sequencing
+        +---20190821_operator_library_mapping
+```
+2. `processing_seq.py` : uses the demultiplexed reads to join the paired-ends
+   and filter based on quality and read length using `fastp`.
+   - **output**
+```
++---data
+    +---processed_sequencing
+        +---20190821_operator_library_mapping
+```
+3. `library_mapping.py` : finds the unique barcodes in the sequences applying a
+   strong filter based on length of the sequence and positioning of the
+   barcodes.
