@@ -7,7 +7,7 @@ indicated the output of any processing functions.
 
 ## Sequencing demultiplexing
 
-All scripts named `DATE_demultiplex_seq.py` split `fastq` files given a
+All scripts named `demultiplex_seq.py` split `fastq` files given a
 series of index reads. To demultiplex our sequencing runs we used the
 [`qiime2`](https://qiime2.org) platform. The `qiime2` developing team strongly
 suggests installing the platform on a separate `conda` environment. To do so
@@ -71,3 +71,29 @@ looks like:
             +---qiime2_output (output objects form qiime2)
             +---tmp
 ```
+
+## Demultiplexed sequencing processing
+
+After the raw sequences have been split into individual `fastq` files for each
+of the index, the sequences need to be processed based on their quality,
+length, and for the case of paired-end reads the forward and reverse read must
+be sticked together. To perform these tasks we use the recently published tool
+[`fastp`](https://github.com/OpenGene/fastp). The installation of this tool
+just as for `qiime2` can be done via `conda`. All that needs to be done is type
+in the terminal
+```
+conda install -c bioconda fastp
+```
+After that all scripts named `processing_seq.py` can be ran to process the
+short-reads. These scripts assume that the data has been demultiplexed already
+as it takes the resulting `fastq` files from the `demux_sequencing` folder
+indicated above. The output of these scripts is saved under
+```
++---data
+    +---processed_sequencing
+        +---DATE_experiment_description
+```
+Specifically `fastp` generates individual `fastq` files with all the reads
+(merged for paired-end runs) for each index. It also generates `HTML` and
+`JSON` summaries of the sequencing processing, listing average read quality,
+base composition per position, among other useful quantities.

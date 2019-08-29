@@ -58,6 +58,8 @@ for group, seq in seq_group:
         --html {html_report} \
         --json {json_report} \
         --report_title "{html_report}" \
+        --max_len1 121
+        --max_len2 121
     '''
 
     # Run program
