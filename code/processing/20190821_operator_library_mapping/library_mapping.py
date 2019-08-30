@@ -56,19 +56,31 @@ for i, fastq in enumerate(fastq_files):
                         verify='false',
                         variant='illumina1.8')
 
-    # Initialize dataframe to save sequences
-    names = ['id', 'index', 'sequence']
-    df_seq = pd.DataFrame(columns=names)
-
+    
     print('reading file into memory')
+    # Initialize list to save sequences
+    seq_list = list()
+
+    # Initialize counter
+    counter = 0
     # Iterate over sequences
     for seq in seqs:
-        # Add DNA sample to corresponding list
-        df_seq = df_seq.append({'id': seq.metadata['id'],
-                                'index' : 'index1',
-                                'sequence' : str(skbio.DNA(sequence=seq, 
-                                                        validate=False))},
-                            ignore_index=True)
+        if counter%100000 == 0:
+            print(f'read # {counter}')
+        # Extract ID
+        seq_id = seq.metadata['id']
+        # Extract sequence
+        seq_str = str(skbio.DNA(sequence=seq, validate=False))
+        # Append to list
+        seq_list.append([seq_id, f'index{i}', seq_str])      
+        counter += 1
+    
+    # Generate Pandas dataframe from list
+    names = ['id', 'index', 'sequence']
+    df_seq = pd.DataFrame.from_records(seq_list, 
+                                       columns=names)
+
+    # Add length to dataframe
     df_seq['seq_len'] =  df_seq.sequence.apply(len)
 
     # Map operators
