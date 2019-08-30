@@ -100,7 +100,8 @@ for i, fastq in enumerate(fastq_files):
     print('Done!')
     print('writing file into memory')
     # Write file to memory
-    df_seq.to_csv(f'{outputdir}index{i}_raw_operator_mapping.csv')
+    df_seq.to_csv(f'{outputdir}index{i+1}_raw_operator_mapping.csv',
+                  index=False)
 
     # Apply strong filter to operators based on length, operator existence and
     # operator position
@@ -135,4 +136,5 @@ for i, fastq in enumerate(fastq_files):
 
     # Write file to memory
     print('writing barcode list into memory')
-    df_seq.to_csv(f'{outputdir}index{i}_operator_counts.csv')
+    df_counts.to_csv(f'{outputdir}index{i+1}_operator_counts.csv',
+                  index=False)
