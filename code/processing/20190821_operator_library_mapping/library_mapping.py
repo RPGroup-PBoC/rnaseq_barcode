@@ -28,8 +28,7 @@ operators = {'O1': str(O1),
              'O2': str(O2),
              'O3': str(O3)}
 
-# Define function to map operator from sequence in dataframe
-# Define function to find operator
+# Define function to map operator from sequence
 def op_match(seq):
     '''
     Function to match the operator sequences
@@ -46,6 +45,7 @@ def op_match(seq):
     # If none match, return none
     if not bool(op_pos):
         return ['None', 0, 0]
+
 #%%
 for i, fastq in enumerate(fastq_files):
     print(fastq)
