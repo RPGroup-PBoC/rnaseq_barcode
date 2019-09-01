@@ -4,7 +4,7 @@ import glob
 import pandas as pd
 
 #%%
-# Date for sequencing run
+# Date for sequencing run of the library to map
 DATE = 20190821
 # Description to be attached to folder names
 DESCRIPTION = '_operator_library_mapping/'
