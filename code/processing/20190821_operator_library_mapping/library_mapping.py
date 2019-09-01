@@ -21,12 +21,20 @@ outputdir = '../../../data/barcodes/' +\
 fastq_files = glob.glob(f'{datadir}*.fastq.gz')
 
 # Define operator sequences
-O1 = skbio.DNA('aattgtgagcggataacaatt'.upper()).reverse_complement()
-O2 = skbio.DNA('aaatgtgagcgagtaacaacc'.upper()).reverse_complement()
-O3 = skbio.DNA('ggcagtgagcgcaacgcaatt'.upper()).reverse_complement()
+# Forward operators
+O1_rev = skbio.DNA('aattgtgagcggataacaatt'.upper())
+O2_rev = skbio.DNA('aaatgtgagcgagtaacaacc'.upper())
+O3_rev = skbio.DNA('ggcagtgagcgcaacgcaatt'.upper())
+# Reverse complement
+O1 = O1_rev.reverse_complement()
+O2 = O2_rev.reverse_complement()
+O3 = O3_rev.reverse_complement()
 operators = {'O1': str(O1),
              'O2': str(O2),
-             'O3': str(O3)}
+             'O3': str(O3),
+             'O1_rev': str(O1_rev),
+             'O2_rev': str(O2_rev),
+             'O3_rev': str(O3_rev)}
 
 # Define function to map operator from sequence
 def op_match(seq):
@@ -45,6 +53,13 @@ def op_match(seq):
     # If none match, return none
     if not bool(op_pos):
         return ['None', 0, 0]
+
+def rev_comp(seq):
+    '''
+    Function that takes a string, converts it into skbio.DNA
+    and takes the reverse complement
+    '''
+    return str(skbio.DNA(seq, validate=False).reverse_complement())
 
 # Define RNAP binding site
 rnap = str(skbio.DNA('TTTACACTTTATGCTTCCGGCTCGTATAATGTGTGG').\
@@ -125,6 +140,23 @@ for i, fastq in enumerate(fastq_files):
                                       'op_begin',
                                       'op_end'])],
                         axis=1)
+
+    print('reverse complementing inverted sequences')
+    # Find forward sequences
+    bool_forward =  ['_rev' in x and x != 'None' for x in df_seq.operator]
+    # Reverse complement forward sequences
+    df_seq.loc[bool_forward, 'sequence'] = [rev_comp(seq) for seq in 
+                                            df_seq[bool_forward]['sequence']]
+    # Re-mapping operators
+    op_map = list()
+    # Loop through rows
+    for seq in df_seq.sequence:
+        op_map.append(op_match(seq))
+
+    df_seq[['operator', 'op_begin', 'op_end']] =\
+    pd.DataFrame.from_records(op_map, columns=['operator', 
+                                               'op_begin',
+                                               'op_end'])
     print('Done!')
 
     print('mapping RNAP binding site and cloning site')
