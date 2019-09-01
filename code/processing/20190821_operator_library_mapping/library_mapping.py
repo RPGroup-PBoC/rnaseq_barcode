@@ -46,6 +46,34 @@ def op_match(seq):
     if not bool(op_pos):
         return ['None', 0, 0]
 
+# Define RNAP binding site
+rnap = str(skbio.DNA('TTTACACTTTATGCTTCCGGCTCGTATAATGTGTGG').\
+           reverse_complement())
+# Define sequence post operator
+cloning = str(skbio.DNA('GCTAGCGGTGTTTAGTTAGCATCCGGTCTCACATGC').\
+          reverse_complement())
+
+def const_match(seq):
+    '''
+    Function to match the operator sequences
+    '''
+    # Find RNAP
+    rnap_pos = re.search(rnap, seq)
+    # Find cloning site
+    cloning_pos = re.search(cloning, seq)
+    
+    # Determine if RNAP was found
+    if bool(rnap_pos):
+        RNAP = [True] + [*rnap_pos.span()]
+    else:
+        RNAP = [False, 0, 0]
+    # Determine if cloning site was found
+    if bool(cloning_pos):
+        CLONING = [True] + [*cloning_pos.span()]
+    else:
+        CLONING = [False, 0, 0]
+    
+    return RNAP + CLONING
 #%%
 for i, fastq in enumerate(fastq_files):
     print(fastq)
@@ -98,6 +126,28 @@ for i, fastq in enumerate(fastq_files):
                                       'op_end'])],
                         axis=1)
     print('Done!')
+
+    print('mapping RNAP binding site and cloning site')
+    # Initialize list to save results
+    const_map = list()
+    # Loop through rows
+    for seq in df_seq.sequence:
+        # Map RNAP and cloning site
+        const_map.append(const_match(seq))
+
+    # Generate dataframe from 
+    df_const = pd.DataFrame.from_records(const_map,
+                                columns=['rnap',
+                                'rnap_begin',
+                                'rnap_end',
+                                'cloning',
+                                'cloning_begin',
+                                'cloning_end'])
+
+    # Concatenate dataframes
+    df_seq = pd.concat([df_seq, df_const], axis=1)
+    print('Done!')
+
     print('writing file into memory')
     # Write file to memory
     df_seq.to_csv(f'{outputdir}index{i+1}_raw_operator_mapping.csv',
@@ -109,6 +159,21 @@ for i, fastq in enumerate(fastq_files):
     df = df_seq[(df_seq.operator != 'None') &
                 (df_seq.seq_len == 113) &
                 (df_seq.op_begin == 56)]
+
+    # reset index
+    df = df.reset_index(drop=True)
+
+    print('filtering sequences by RNAP and cloning site position')
+    # Apply filters to sequences based on the presence of the
+    # RNAP binding site and the cloning site with the right
+    # Position
+    df = df[(df.rnap) &
+            (df.cloning) &
+            (df.rnap_begin == 77) &
+            (df.cloning_begin == 20)]
+
+    # Reset index
+    df = df.reset_index(drop=True)
 
     # Group by operator
     df_group = df.groupby('operator')
