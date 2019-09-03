@@ -20,6 +20,7 @@ outputdir = '../../../data/barcodes/' +\
 # List all fastq.gz files
 fastq_files = glob.glob(f'{datadir}*.fastq.gz')
 
+#%%
 # Define operator sequences
 # Forward operators
 O1_rev = skbio.DNA('aattgtgagcggataacaatt'.upper())
@@ -54,6 +55,7 @@ def op_match(seq):
     if not bool(op_pos):
         return ['None', 0, 0]
 
+#%%
 def rev_comp(seq):
     '''
     Function that takes a string, converts it into skbio.DNA
@@ -61,6 +63,7 @@ def rev_comp(seq):
     '''
     return str(skbio.DNA(seq, validate=False).reverse_complement())
 
+#%%
 # Define RNAP binding site
 rnap = str(skbio.DNA('TTTACACTTTATGCTTCCGGCTCGTATAATGTGTGG').\
            reverse_complement())
@@ -89,6 +92,7 @@ def const_match(seq):
         CLONING = [False, 0, 0]
     
     return RNAP + CLONING
+
 #%%
 for i, fastq in enumerate(fastq_files):
     print(fastq)
@@ -99,7 +103,6 @@ for i, fastq in enumerate(fastq_files):
                         verify='false',
                         variant='illumina1.8')
 
-    
     print('reading file into memory')
     # Initialize list to save sequences
     seq_list = list()
