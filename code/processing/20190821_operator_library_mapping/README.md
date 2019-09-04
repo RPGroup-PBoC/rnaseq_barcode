@@ -1,6 +1,6 @@
 ---
-status: Rejected
-reason: Experiment not yet completed 
+status: Accepted
+reason: Data looks great. Diversity of library was captured.
 ---
 
 # 2019-08-21 Sequencing run
@@ -114,4 +114,11 @@ into the machine
 ```
 3. `library_mapping.py` : finds the unique barcodes in the sequences applying a
    strong filter based on length of the sequence and positioning of the
-   barcodes.
+   barcodes. This script outputs a list of barcodes and counts for each barcode
+   for every `fastq` file.
+   - **output**
+```
++---data
+    +---barcodes
+        +---20190821_operator_library_mapping
+```
