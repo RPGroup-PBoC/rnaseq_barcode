@@ -67,6 +67,7 @@ rnaseq_barcode.egg-info/
 *.dill
 
 # Local directories to ignore
+data/barcodes
 data/raw_sequencing
 data/demux_sequencing
 data/processed_sequencing
