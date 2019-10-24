@@ -71,5 +71,6 @@ data/barcodes
 data/raw_sequencing
 data/demux_sequencing
 data/processed_sequencing
+data/flow
 _site/
 library.bib
