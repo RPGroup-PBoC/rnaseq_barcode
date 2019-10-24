@@ -159,7 +159,7 @@ def gaussian_gate(df, alpha, x_val='FSC-A', y_val='SSC-A', log=True,
 
 
 # File Parsing Utilities
-def fcs_to_csv(path, file_name, save_metadata=True):
+def fcs_to_csv(path, file_name, channels=None, save_metadata=False):
     R"""
     Reads in a Flow Cytometry Standard (FCS) file and exports all content
     directly to an easily parseable csv fie.
@@ -169,7 +169,9 @@ def fcs_to_csv(path, file_name, save_metadata=True):
         Path to .fcs file
     file_name : str
         Path to save file to .csv
-    save_metadata : bool
+    channels : None or list.
+        List of channels to be exported. If None, all channels are exported.
+    save_metadata : bool. Default = False
         If True, a metadata file will also be saved. It will have the name of
         `path` with `_metadata.csv`
     """
@@ -179,6 +181,10 @@ def fcs_to_csv(path, file_name, save_metadata=True):
         raise RuntimeError("`path` is not an FCS file.")
 
     meta, data = fcsparser.parse(path)
+    # If channels are provided, extract such channels
+    if channels != None:
+        data = data.loc[:, channels]
+    # Export data to CSV
     data.to_csv(file_name, index=False)
 
     if save_metadata:
