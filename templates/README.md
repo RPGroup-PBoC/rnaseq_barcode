@@ -1,10 +1,27 @@
 ## `templates`
-While you may repeat an experiment many, many (many) times. **you must never
-directly copy one day's folder and simply rename the files!** This is a
-recipe for disaster and confusion as you may forget to change a detail that
-is critical to the functioning of the experiment. 
+In this directory, we store templates of experiment descriptions and processing
+scripts such that updating them for each experiment is simple.
 
-In this directory, you can store templates of your experiment descriptions
-and processing scripts such that updating them for each experiment is simple.
-In the example `README.md` file, I've put parameters that need to be changed in
-bold capitalized text so it is easy to review.  While it may be tempting, **never copy one experimental folder to another, even if you know it's exactly identical.** It takes only a few minutes to read through a file and change a handful of parameters and can save you much misery in the future. 
+## Raw sequencing processing
+
+- `demultiplex_seq.py` : This script takes raw `fastq` files from the
+  sequencing machine and splits them into different files according to a list
+  of sequencing index. See `processing/README.md` for more information.
+- `sequencing_barcodes_qiime2.tsv` : Example tab separated value file listing
+  the sequencing index nucleotides to split files. This specific format is
+  required by the `qiime2` package.
+- `processing_seq.py` : This script runs the `fastp` processing pipeline to
+  filter the sequencing data, merge paired-end reads, among other things. See
+  `processing/README.md` for more information.
+
+
+## Raw flow cytometry processing
+
+- `YYYYMMDD_rx_fcsrename.csv` : Standard `csv` file used by the shell script
+  `fcs_rename.py` to rename `fcs` files in bulk. Please make sure to use the
+  standardize filename format:
+  ```
+  YYYYMMDD_run#_phenotype_operator_rbs_XuMIPTG
+  ```
+  This file must have the same spatial arrangement that the 96 well plate that
+  went into the cytometer had for the files to be properly renamed.
