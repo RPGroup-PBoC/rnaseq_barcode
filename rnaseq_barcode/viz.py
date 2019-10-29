@@ -92,3 +92,28 @@ def pboc_style_bokeh():
             }}}
 
     return theme_json
+
+def pboc_color_selector():
+    """
+    Select the color palette of your choice.
+    Parameters
+    ----------
+    style: str "mut" or "pboc"
+        A string identifier for the style. "mut" gives colors for single and double mutants.
+        "pboc" returns the PBoC2e color palette.
+    Returns
+    -------
+    colors: dict
+        Dictionary of colors. If "dna", "double", or "inducer" is the selected style,
+        keys will be the mutants in upper case. Double mutant keys will be DNA-IND. For
+        pboc, the keys will be the typical color descriptors. 
+    """
+    
+    colors = {'green': '#7AA974', 'light_green': '#BFD598',
+             'pale_green': '#DCECCB', 'yellow': '#EAC264',
+             'light_yellow': '#F3DAA9', 'pale_yellow': '#FFEDCE',
+             'blue': '#738FC1', 'light_blue': '#A9BFE3',
+             'pale_blue': '#C9D7EE', 'red': '#D56C55', 'light_red': '#E8B19D',
+             'pale_red': '#F1D4C9', 'purple': '#AB85AC',
+             'light_purple': '#D4C2D9', 'dark_green':'#7E9D90', 'dark_brown':'#905426'}
+    return colors

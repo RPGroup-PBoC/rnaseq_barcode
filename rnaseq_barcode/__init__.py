@@ -3,6 +3,8 @@
 """Top level package for evo_utils utilities"""
 
 from . import viz
+from . import flow
+from . import thermo
 
 __author__ = """Manuel Razo"""
 __email__ = """mrazomej {at} caltech.edu"""
