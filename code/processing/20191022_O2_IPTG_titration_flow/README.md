@@ -1,6 +1,6 @@
 ---
 status: Rejected
-notes: Experiment hasn't been completed. 
+notes: The data falls really far from theory. 
 ---
 # 2019-10-22 Operator O2 IPTG titration
 
