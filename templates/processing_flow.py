@@ -53,4 +53,4 @@ for g, d in grouped:
 fold_change_df = pd.concat(fc_dfs, axis=0)
 
 # Save to a CSV.
-fold_change_df.to_csv(f'output/{DATE}_r{RUN_NO}_fold_change.csv')
+fold_change_df.to_csv(f'output/{DATE}_r{RUN_NO}_fold_change.csv', index=False)
