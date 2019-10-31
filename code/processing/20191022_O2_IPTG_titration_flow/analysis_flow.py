@@ -9,7 +9,6 @@ import rnaseq_barcode as rnaseq
 #%%
 # Set plotting style
 rnaseq.viz.pboc_style_mpl()
-colors = sns.color_palette('colorblind', n_colors=6)
 
 # Set the experiment constants.
 DATE = 20191022
@@ -29,8 +28,11 @@ constants = rnaseq.thermo.load_constants()
 rep = np.sort(data.repressors.unique())
 rep = rep[rep > 0]
 
+# Set colors for repressor copy numbers
+colors = sns.color_palette('colorblind', n_colors=6)
+
 # Define range of IPTG
-iptg = np.logspace(-1, np.log10(5000), 50)
+iptg = np.insert(np.logspace(-1, np.log10(5000), 50), 0, [0])
 
 # Define binding energy of operator
 era = constants['O2']
@@ -53,12 +55,13 @@ fig, ax = plt.subplots(1, 1)
 # Add labels and scaling
 ax.set_xlabel('IPTG (M)')
 ax.set_ylabel('fold-change')
-ax.set_xscale('log')
+ax.set_xscale('symlog', linthreshx=1E-7, linscalex=0.5)
 
 # Group the data by operator
 # Remove auto and delta.
-fc = data.loc[(data['strain'] != 'auto') & (data['strain'] != 'delta')]
-grouped = fc.groupby(['strain', 'repressors', 'operator'])
+fc = data.loc[(data['strain'] != 'auto') & 
+              (data['strain'] != 'delta')]
+grouped = fc.groupby(['repressors', 'operator'])
 
 # Plot the inensity curves.
 for i, (g, d) in enumerate(grouped):
@@ -67,12 +70,13 @@ for i, (g, d) in enumerate(grouped):
                 color=colors[i], label='')
     # Plot data
     _ = ax.plot(d['IPTGuM'] / 1E6, d['fold_change'], '--o',
-                color=colors[i], label=g, markersize=5)
+                color=colors[i], label=g[0], markersize=5)
 
 # Add a legend.
-_ = ax.legend(loc='upper left', title='operator')
-ax.set_ylim([-0.1, 2])
+_ = ax.legend(loc='upper left', title='rep./cell', fontsize=6)
+ax.set_ylim([-0.1, 1.2])
 # Save the figure.
+plt.tight_layout()
 plt.savefig('output/fold_change_curve.png')
 
 
