@@ -25,12 +25,8 @@ data = pd.read_csv(fc_file)
 constants = rnaseq.thermo.load_constants()
 
 # Define unique repressors
-rep = data.repressors.unique()
+rep = np.sort(data.repressors.unique())
 rep = rep[rep > 0]
-# Sort repressors by their "string" value
-str_rep = np.sort([str(r) for r in rep])
-rep = [float(r) for r in str_rep]
-
 
 # Set colors for repressor copy numbers
 colors = sns.color_palette('colorblind', n_colors=6)
@@ -65,7 +61,7 @@ ax.set_xscale('log')
 # Remove auto and delta.
 fc = data.loc[(data['strain'] != 'auto') & 
               (data['strain'] != 'delta')]
-grouped = fc.groupby(['strain', 'repressors', 'operator'])
+grouped = fc.groupby(['repressors', 'operator'])
 
 # Plot the inensity curves.
 for i, (g, d) in enumerate(grouped):
