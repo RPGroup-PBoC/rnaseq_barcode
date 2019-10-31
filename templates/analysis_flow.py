@@ -11,7 +11,7 @@ import rnaseq_barcode as rnaseq
 rnaseq.viz.pboc_style_mpl()
 
 # Set the experiment constants.
-DATE = 20191030
+DATE = :
 RUN_NO = 1
 
 # Load the data set.
