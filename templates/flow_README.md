@@ -31,8 +31,11 @@ Miltenyi Biotec MACSQuant flow cytometer (Bjorkman lab)
 
 ## Analysis Files
 
+**LacI titration**
+![](output/fold_change_lacI.png)
+
 **Induction Profile**
-![](output/fold_change_curve.png)
+![](output/fold_change_IPTG.png)
 
 ## Experimental Protocol
 
