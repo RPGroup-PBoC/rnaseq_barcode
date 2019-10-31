@@ -1,6 +1,6 @@
 ---
-status: Rejected
-notes: Experiment hasn't been completed. 
+status: Accepted
+notes: The data looks good for all IPTG smaller than 1000 µM
 ---
 # 2019-10-30 Operator O2 IPTG titration
 
