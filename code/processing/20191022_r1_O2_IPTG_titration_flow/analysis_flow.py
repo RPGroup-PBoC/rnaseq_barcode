@@ -1,4 +1,5 @@
 #%%
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -10,9 +11,10 @@ import rnaseq_barcode as rnaseq
 # Set plotting style
 rnaseq.viz.pboc_style_mpl()
 
-# Set the experiment constants.
-DATE = 20191022
-RUN_NO = 1
+# Set the experiment constants from folder name
+dirname = os.getcwd().split('/')[-1]
+DATE = int(dirname.split('_')[0])
+RUN_NO = int(dirname.split('_')[1][1:])
 
 # Load the data set.
 fc_file = glob.glob('output/*fold_change.csv')[0]
@@ -35,7 +37,8 @@ colors = sns.color_palette('colorblind', n_colors=6)
 iptg = np.insert(np.logspace(-1, np.log10(5000), 50), 0, [0])
 
 # Define binding energy of operator
-era = constants['O2']
+op = data.operator.unique()[0]
+era = constants[op]
 
 # Generate meshgrid to feed into function
 rr, ii = np.meshgrid(rep, iptg)
