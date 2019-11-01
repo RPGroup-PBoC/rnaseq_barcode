@@ -1,12 +1,14 @@
+import os
 import numpy as np
 import pandas as pd
 import glob
 import imp
 import rnaseq_barcode.flow as flow
 
-# Define the experiment parameters
-DATE = 20191031
-RUN_NO = 1
+# Set the experiment constants from folder name
+dirname = os.getcwd().split('/')[-1]
+DATE = int(dirname.split('_')[0])
+RUN_NO = int(dirname.split('_')[1][1:])
 USERNAME = 'nmccarty3'
 gating_fraction = 0.4
 
@@ -52,5 +54,7 @@ for g, d in grouped:
 
 fold_change_df = pd.concat(fc_dfs, axis=0)
 
+if not os.path.exists('./output/'):
+    os.mkdir('./output/')
 # Save to a CSV.
 fold_change_df.to_csv(f'output/{DATE}_r{RUN_NO}_fold_change.csv', index=False)
