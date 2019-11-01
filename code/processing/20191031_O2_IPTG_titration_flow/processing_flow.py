@@ -7,7 +7,7 @@ import rnaseq_barcode.flow as flow
 # Define the experiment parameters
 DATE = 20191031
 RUN_NO = 1
-USERNAME = 'mrazomej'
+USERNAME = 'nmccarty3'
 gating_fraction = 0.4
 
 # Load all files.

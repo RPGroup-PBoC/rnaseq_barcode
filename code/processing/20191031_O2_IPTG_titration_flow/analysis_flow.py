@@ -11,7 +11,7 @@ import rnaseq_barcode as rnaseq
 rnaseq.viz.pboc_style_mpl()
 
 # Set the experiment constants.
-DATE = 20191030
+DATE = 20191031
 RUN_NO = 1
 
 # Load the data set.
@@ -46,7 +46,7 @@ theory = rnaseq.thermo.SimpleRepression(rr, ee, effector_conc=ii,
                                         ka=constants['Ka'], ki=constants['Ki'],
                                         ep_ai=constants['ep_AI'])
 
-# Compute fold-change for IPTG titration
+# Compute fold-change
 fc_theory = theory.fold_change().T
 #%%
 # Instantiate the figure canvas
@@ -124,4 +124,3 @@ _ = ax.plot(fc['repressors'], fc['fold_change'], 'o',
 # Save the figure.
 plt.tight_layout()
 plt.savefig('output/fold_change_lacI.png')
-

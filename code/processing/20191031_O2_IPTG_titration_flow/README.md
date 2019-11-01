@@ -1,6 +1,6 @@
 ---
 status: Rejected
-notes: The data point for 5 µM IPTG is completely off for all strains
+notes: One column is systematically "off", e.g. column 4
 ---
 # 2019-10-31 Operator O2 IPTG titration
 
@@ -55,7 +55,7 @@ Miltenyi Biotec MACSQuant flow cytometer (Bjorkman lab)
 
 4. The 96 well plate was placed in the 37°C incubation room and allowed to grow
    for 8 hours shaking at 225 RPM. This time is sufficient for cells to reach
-   an  OD<sub>600nm</sub>of approximately 0.3
+   an  OD<sub>600nm</sub>of apprO2imately 0.3
 
 5.  Once 8 hours had passed, the cells were diluted 1:10 in to the chilled
     shallow 96 well plate filled with media and the appropriate concentration
