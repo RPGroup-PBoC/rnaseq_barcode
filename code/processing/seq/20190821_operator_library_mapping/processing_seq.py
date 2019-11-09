@@ -2,6 +2,7 @@
 import os
 import glob
 import pandas as pd
+import git
 
 #%%
 # Date for sequencing run of the library to map
@@ -10,10 +11,13 @@ DATE = 20190821
 DESCRIPTION = '_operator_library_mapping/'
 
 # Path to input folder
-INPUT_DIR = '../../../data/demux_sequencing/' + f'{DATE}{DESCRIPTION}'
+# Find project parental directory
+repo = git.Repo('./', search_parent_directories=True)
+homedir = repo.working_dir
+INPUT_DIR = f'{homedir}/data/demux_sequencing/{DATE}{DESCRIPTION}'
 
 # Path to output folder
-OUTPUT_DIR = '../../../data/processed_sequencing/' + f'{DATE}{DESCRIPTION}'
+OUTPUT_DIR = f'{homedir}/data/processed_sequencing/{DATE}{DESCRIPTION}'
 
 # Generate output directory if it doesn't exist
 if not os.path.exists(OUTPUT_DIR):

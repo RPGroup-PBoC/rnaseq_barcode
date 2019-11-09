@@ -7,14 +7,19 @@ import numpy as np
 import pandas as pd
 import collections
 import skbio
+import git
 
 #%%
+# Find project parental directory
+repo = git.Repo('./', search_parent_directories=True)
+homedir = repo.working_dir
+
 # Define data directory
-datadir = '../../../data/processed_sequencing/' +\
+datadir = f'{homedir}/data/processed_sequencing/' +\
           '20190821_operator_library_mapping/'
 
 # Define output dir
-outputdir = '../../../data/barcodes/' +\
+outputdir = '{homedir}/data/barcodes/' +\
             '20190821_operator_library_mapping/'
 
 # List all fastq.gz files
