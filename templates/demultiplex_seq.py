@@ -3,6 +3,7 @@ import os
 import itertools
 import subprocess
 import glob
+import git
 
 #%% 
 # Date for sequencing run
@@ -14,8 +15,12 @@ DESCRIPTION = 'relevant_description_here/'
 # Conda environment name where qiime2 is installed
 CONDA_ENV = 'qiime2'
 
+# Find project parental directory
+repo = git.Repo('./', search_parent_directories=True)
+homedir = repo.working_dir
+
 # Path containing all raw input information
-INPUT_DIR = '../../../data/raw_sequencing/' + f'{DATE}{DESCRIPTION}' 
+INPUT_DIR = f'{homedir}/data/raw_sequencing/{DATE}{DESCRIPTION}' 
 
 # Path containing raw input sequences
 RAW_DIR = INPUT_DIR + 'miseq_output/Data/Intensities/BaseCalls/'
@@ -25,7 +30,7 @@ RAW_DIR = INPUT_DIR + 'miseq_output/Data/Intensities/BaseCalls/'
 BARCODE_LIST = INPUT_DIR + 'sequencing_barcodes_qiime2.tsv'
 
 # Path to output folder
-OUTPUT_DIR = '../../../data/demux_sequencing/' +\
+OUTPUT_DIR = f'{homedir}/data/demux_sequencing/' +\
              f'{DATE}{DESCRIPTION}'
 
 # Define temporary directory
