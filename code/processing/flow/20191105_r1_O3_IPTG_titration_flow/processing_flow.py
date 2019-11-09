@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import glob
 import imp
+import git
 import rnaseq_barcode.flow as flow
 
 # Set the experiment constants from folder name
@@ -12,8 +13,11 @@ RUN_NO = int(dirname.split('_')[1][1:])
 USERNAME = 'mrazomej'
 gating_fraction = 0.4
 
+# Find project parental directory
+repo = git.Repo('./', search_parent_directories=True)
+homedir = repo.working_dir
 # Load all files.
-files = glob.glob(f'../../../data/flow/csv/{DATE}*_r{RUN_NO}*.csv')
+files = glob.glob(f'{homedir}/data/flow/csv/{DATE}*_r{RUN_NO}*.csv')
 
 # Set up the DataFrame
 colnames = ['date', 'username', 'phenotype', 'operator', 'strain', 'IPTGuM',
