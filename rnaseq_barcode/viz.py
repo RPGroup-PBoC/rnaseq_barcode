@@ -117,3 +117,43 @@ def pboc_color_selector():
              'pale_red': '#F1D4C9', 'purple': '#AB85AC',
              'light_purple': '#D4C2D9', 'dark_green':'#7E9D90', 'dark_brown':'#905426'}
     return colors
+
+def pboc_single(p):
+    '''
+    Formats a single bokeh plot to that used in 
+    Physical Biology of the Cell, 2nd edition.
+    Parameters
+    ----------
+    p : bokeh Figure
+    '''
+    # Figure
+    p.background_fill_color = '#E3DCD0'
+    p.outline_line_color = '#FFFFFF'
+
+    # Axis
+    p.axis.axis_line_color = "white"
+    p.axis.major_tick_in = 7
+    p.axis.major_tick_line_width = 2.5
+    p.axis.major_tick_line_color = "white"
+    p.axis.minor_tick_line_color = "white"
+    p.axis.axis_label_text_font = 'Helvetica'
+    p.axis.axis_label_text_font_style = 'normal'
+
+    # Grid
+    p.grid.grid_line_color = 'white'
+
+    # Legend
+    if p.legend:
+        p.legend.background_fill_color = '#E3DCD0'
+        p.legend.border_line_color = '#FFFFFF'
+        p.legend.border_line_width = 1.5
+        p.legend.background_fill_alpha = 0.5
+
+    # Title
+    if p.title:
+        p.title.background_fill_color = '#FFEDC0'
+        p.title.text_font_style = 'normal'
+        p.title.align = 'center'
+        p.title.text_font = 'Helvetica'
+        p.title.offset = 2
+
