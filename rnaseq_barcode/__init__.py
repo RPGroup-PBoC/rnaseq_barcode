@@ -5,6 +5,7 @@
 from . import viz
 from . import flow
 from . import thermo
+from . import stats
 
 __author__ = """Manuel Razo"""
 __email__ = """mrazomej {at} caltech.edu"""
