@@ -58,9 +58,9 @@ for group, seq in seq_group:
         --html {html_report} \
         --json {json_report} \
         --report_title "{html_report}" \
-        --max_len1 113 \
-        --max_len2 113 \
-        --overlap_len_require 103 \
+        --max_len1 150 \
+        --max_len2 150 \
+        --overlap_len_require 100 \
         --overlap_diff_percent_limit 5
     '''
 
