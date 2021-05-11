@@ -72,5 +72,6 @@ data/raw_sequencing
 data/demux_sequencing
 data/processed_sequencing
 data/flow
+data/extra
 _site/
 library.bib
