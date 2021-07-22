@@ -44,7 +44,11 @@ for group, seq in seq_group:
     html_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.html'
     json_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.json'
     report_title = f'{DATE}{DESCRIPTION} fastp report'
-
+    
+    if "negctrl" in group:
+        overlap = 50
+    else:
+        overlap = 100
     # Define string to be ran on the terminal
     fastp = f'''fastp \
         --in1 {in1} \
@@ -58,10 +62,9 @@ for group, seq in seq_group:
         --html {html_report} \
         --json {json_report} \
         --report_title "{html_report}" \
-        --max_len1 150 \
-        --max_len2 150 \
-        --overlap_len_require 100 \
-        --overlap_diff_percent_limit 5
+        --overlap_len_require {overlap} \
+        --overlap_diff_percent_limit 5 \
+        --thread 6
     '''
 
     # Run program
