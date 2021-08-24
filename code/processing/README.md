@@ -16,10 +16,12 @@ index reads. To demultiplex our sequencing runs we used the
 [`qiime2`](https://qiime2.org) platform. The `qiime2` developing team strongly
 suggests installing the platform in a separate `conda` environment. To do so,
 there must be already a functional [`Anaconda
-distribution`](https://www.anaconda.com/distribution/) on your computer. Then to
-generate the environment (named `qiime2` in our scripts, but that is easy to
-change), you must run
-
+distribution`](https://www.anaconda.com/distribution/) on your computer. 
+Instructions on installing Qiime can be found [here](https://docs.qiime2.org/2021.4/install/native/).
+Here we show the installation instructions on  for the version of `qiime2` that is used for analysis of data
+in this project. There might be newer versions of `qiime2` available, but we cannot guarantee that
+the analysis pipeline works for these versions. Note that the only difference between the official instructions
+and the ones shown here is the name of the conda environment that is created.
 **macOS/OS X (64-bit)**
 ```
 conda update conda
@@ -40,16 +42,21 @@ conda env create -n qiime2 --file qiime2-2019.7-py36-linux-conda.yml
 
 rm qiime2-2019.7-py36-linux-conda.yml
 ```
-This will install the necessary libraries to run `qiime2` basic functions.
+This will create a new conda environment and install the necessary libraries to run `qiime2` basic functions.
 
-Normally to run `qiime2` you would have to activate the environment by writing
-in the command line
+In general, to run `qiime2` the environment needs to be activated. This is done by writing
+in the command line (replace `conda` with `source` in Windows)
 ```
-source activate qiime2
+conda activate qiime2
 ```
-But our customized python scripts do this for you internally using the
-`subprocess` module. So there is no need to activate the environment before
-running our sequencing demultiplexing scripts.
+
+The to switch back the base conda environment, deactivate the current environment by
+```
+conda deactivate
+```
+
+To run our customized python scripts the environment does not need to be activated.
+It is done automatically by the `subprocess` module.
 
 The demultiplexing scripts assume the file structure for this project that
 looks like:
@@ -57,41 +64,42 @@ looks like:
 +---code
 |   +---processing
 |       +---DATE_sequencing_processing_scripts
-|           +---DATE_demultiplex_seq.py
+|           +---demultiplex_seq.py
 |
 +---data
     +---raw_sequencing
-    |    +---DATE_sequencing_data
+    |    +---DATE_SEQUENCING-INFORMATION
     |        +---sequencing_barcodes_qiime2.tsv (barcodes list)
-    |        +---miseq_output (files as given by Illumina)
+    |        +---MISEQ (files as given by Illumina)
     |            +---Data
     |                +---Intensities
     |                    +---BaseCalls
     |                        +---R1.fastq.gz (forward read)
     |                        +---R2.fastq.gz (reverse read)
     |                        +---I1.fastq.gz (index read)
-    +---demux_sequencing
-        +---DATE_demultiplex_data (demultiplex fastq here)
-            +---qiime2_output (output objects form qiime2)
-            +---tmp
 ```
+Where all names written in capital letters are given as variables in the `demultiplex_seq.py` script. The folder structure for
+data is quite strict, but can be modified, as long as the `demultiplex_seq.py` is adapted appropriately.
+
+To run the script, simply execute the `demultiplex_seq.py` file from the terminal.
+
+The index barcodes needed for demultplexing are kept in `sequencing_barcodes_qiime2.tsv`. For this file, make sure the
+columns are separated by tabs, and not spaces, otherwise `qiime` complains.
 
 ## Demultiplexed sequencing processing
 
 After the raw sequences have been split into individual `fastq` files for each
 of the indexes, the sequences need to be processed based on their quality,
 length, and in the case of paired-end reads, the forward and reverse read must
-be stuck together. To perform these tasks, we use the recently published tool
-[`fastp`](https://github.com/OpenGene/fastp). The installation of this tool,
-just as for `qiime2` can be done via `conda`. All that needs to be done is type
-in the terminal
+be stuck together. To perform these tasks, we use
+[`fastp`](https://github.com/OpenGene/fastp). The package is installed via
 ```
 conda install -c bioconda fastp
 ```
-After that, all scripts named `processing_seq.py` can be ran to process the
+After that, all scripts named `processing_seq.py` can be run to process the
 short-reads. These scripts assume that the data has been demultiplexed already
 as it takes the resulting `fastq` files from the `demux_sequencing` folder
-indicated above. The output of these scripts is saved under
+indicated above. The output of these scripts is saved in
 ```
 +---data
     +---processed_sequencing

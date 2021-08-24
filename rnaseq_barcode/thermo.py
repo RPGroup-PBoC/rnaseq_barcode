@@ -193,6 +193,40 @@ class SimpleRepression(object):
         repression = (1 + pact * (self.R / self.n_ns) * np.exp(-self.ep_r))
         return repression**-1
 
+    def fold_change2(self, wpa=True, num_pol=None, ep_pol=None,
+                pact=False):
+        R"""
+        fold - change for simple repression.
+
+        Parameters
+        ----------
+        wpa: bool
+            If True, the weak promoter approximation is made and the state of
+            polymerase being bound to the promoter is ignored.
+        num_pol: int, float, or array
+            Number of RNA Polymerase units per cell. This is required if
+            `wpa == True`.
+        ep_pol: int, float, or array
+            RNAP - DNA binding energy in units of k_BT. This required if
+            `wpa == True`.
+        pact : float or array
+            The probability of having an active repressor. If None is
+            provided, the probability will be computed given effector_conc.
+
+        Returns
+        -------
+        fold_change: float or nd - array
+            Fold - change in gene expression evaluated at each value of c.
+        """
+        if self.allo == False:
+            pact = 1 
+        else:
+            if type(pact) == bool:
+                pact = self.mwc.pact()
+        # Compute repression and return inverse.
+        repression = (1 + pact * (self.R / self.n_ns) * np.exp(-self.ep_r))
+        return 1.16/(repression+0.16)
+
     def saturation(self, wpa=True, num_pol=None, ep_pol=0):
         R"""
         Computes the fold - change in gene expression under saturating

@@ -4,26 +4,37 @@ import itertools
 import subprocess
 import glob
 import git
+from shutil import copyfile
+
 
 #%% 
 # Date for sequencing run
-DATE = 
+DATE = ''
+
 # Description for project. Must be something that shortly summarizes
 # the reason for this sequencing run. It MUST end with /
-DESCRIPTION = 'relevant_description_here/'
+DESCRIPTION = '/'
 
 # Conda environment name where qiime2 is installed
 CONDA_ENV = 'qiime2'
+
+# MiSeq Folder name
+MISEQ = ''
 
 # Find project parental directory
 repo = git.Repo('./', search_parent_directories=True)
 homedir = repo.working_dir
 
 # Path containing all raw input information
-INPUT_DIR = f'{homedir}/data/raw_sequencing/{DATE}{DESCRIPTION}' 
+INPUT_DIR = f'{homedir}/data/raw_sequencing/{DATE}_{DESCRIPTION}' 
+if not os.path.exists(INPUT_DIR):
+  raise RuntimeError(f'Path to data folder is not correct.\n Given:{INPUT_DIR}')
+  
 
 # Path containing raw input sequences
-RAW_DIR = INPUT_DIR + 'miseq_output/Data/Intensities/BaseCalls/'
+RAW_DIR = INPUT_DIR + f'{MISEQ}/Data/Intensities/BaseCalls/'
+if not os.path.exists(RAW_DIR):
+  raise RuntimeError(f'Path to Miseq folder is not correct.\n Given:{RAW_DIR}')
 
 # Define requirements for qiime2 demultiplexing
 # Path to barcode TSV file
@@ -31,7 +42,7 @@ BARCODE_LIST = INPUT_DIR + 'sequencing_barcodes_qiime2.tsv'
 
 # Path to output folder
 OUTPUT_DIR = f'{homedir}/data/demux_sequencing/' +\
-             f'{DATE}{DESCRIPTION}'
+             f'{DATE}_{DESCRIPTION}'
 
 # Define temporary directory
 TMP_DIR = OUTPUT_DIR + 'tmp/'
@@ -56,6 +67,7 @@ if not os.path.exists(QIIME2_DIR):
 FORWARD_STR = 'Undetermined*R1*fastq.gz'
 REVERSE_STR = 'Undetermined*R2*fastq.gz'
 BARCODE_STR = 'Undetermined*I1*fastq.gz'
+
 # Path to each file
 FORWARD_SEQ = glob.glob(RAW_DIR + FORWARD_STR)[0]
 REVERSE_SEQ = glob.glob(RAW_DIR + REVERSE_STR)[0]
@@ -69,10 +81,10 @@ artifact_file = f'{QIIME2_DIR}{DATE}_sequence_artifact.qza'  # output artifact
 print('checking if qiime2 sequence artifact has been generated before.')
 if not os.path.exists(artifact_file):
     # Temporarily rename files so that qiime2 can recognize them
-    print('temporarily moving fastq files...')
-    os.rename(FORWARD_SEQ, TMP_DIR + 'forward.fastq.gz')
-    os.rename(REVERSE_SEQ, TMP_DIR + 'reverse.fastq.gz')
-    os.rename(BARCODE_SEQ, TMP_DIR + 'barcodes.fastq.gz')
+    print('creating temporary copies of fastq files')
+    copyfile(FORWARD_SEQ, TMP_DIR + 'forward.fastq.gz')
+    copyfile(REVERSE_SEQ, TMP_DIR + 'reverse.fastq.gz')
+    copyfile(BARCODE_SEQ, TMP_DIR + 'barcodes.fastq.gz')
 
     # Define bash command to generate artifact for qiime to register seqeunces
     bash_artifact = f'''qiime tools import \
@@ -87,10 +99,10 @@ if not os.path.exists(artifact_file):
                    shell=True)
 
     # Rename files back to original name
-    print('renaming fastq files back to original name...')
-    os.rename(TMP_DIR + 'forward.fastq.gz', FORWARD_SEQ)
-    os.rename(TMP_DIR + 'reverse.fastq.gz', REVERSE_SEQ)
-    os.rename(TMP_DIR + 'barcodes.fastq.gz', BARCODE_SEQ)
+    print('removing temporary fastq files')
+    os.remove(TMP_DIR + 'forward.fastq.gz')
+    os.remove(TMP_DIR + 'reverse.fastq.gz')
+    os.remove(TMP_DIR + 'barcodes.fastq.gz')
     print('DONE!')
 
 #%%
