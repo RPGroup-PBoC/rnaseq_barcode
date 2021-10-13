@@ -21,7 +21,7 @@ datadir = f"{homedir}/data/processed_sequencing/20210507_lacI_negctrl_library_ma
 outputdir = f"{homedir}/data/barcodes/20210507_lacI_negctrl_library_mapping/"
 
 # List fastq.gz file
-fastq_file = glob.glob(f"{datadir}*lacO1mut*.fastq.gz")[0]
+fastq_file = glob.glob(f"{datadir}*LacO1_mutants*.fastq.gz")[0]
 
 #%%
 # O1 binding site sequence

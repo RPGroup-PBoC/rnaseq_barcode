@@ -21,7 +21,7 @@ datadir = f"{homedir}/data/processed_sequencing/20210507_lacI_negctrl_library_ma
 outputdir = f"{homedir}/data/barcodes/20210507_lacI_negctrl_library_mapping/"
 
 # List fastq.gz file
-fastq_file = glob.glob(f"{datadir}*WTlac*.fastq.gz")[0]
+fastq_file = glob.glob(f"{datadir}*WT_Lac*.fastq.gz")[0]
 
 #%%
 # Define operator sequences
@@ -363,9 +363,9 @@ for group, data in df_group:
 
 # Write file to memory
 print("writing barcode list into memory")
-df_counts.to_csv(f"{outputdir}WTlac_barcodes_counts.csv", index=False)
+df_counts.to_csv(f"{outputdir}WT_Lac_barcodes_counts.csv", index=False)
 
-df_reject.to_csv(f"{outputdir}WTlac_rejected_seq.csv", index=False)
+df_reject.to_csv(f"{outputdir}WT_Lac_rejected_seq.csv", index=False)
 
 print("Done! Barcodes filtered and quantified")
 # %%

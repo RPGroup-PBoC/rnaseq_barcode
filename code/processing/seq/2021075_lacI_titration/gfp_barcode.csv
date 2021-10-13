@@ -1,0 +1,8 @@
+strain,gfp_barcode,gfp_barcode_revcomp,barcode_number,repressor
+R0,ACGT,ACGT,9,0
+R22,AAGC,GCTT,10,22
+R60,AGTC,GACT,12,60
+R124,TCAG,CTGA,18,124
+R260,GTAC,GTAC,19,260
+R1220,TGCA,TGCA,20,1220
+R1740,CGTT,AACG,21,1740
