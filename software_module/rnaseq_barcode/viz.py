@@ -8,17 +8,6 @@ import seaborn as sns
 
 import numpy as np
 
-"""
-Title:
-    viz.py
-Last update:
-    2019-05-10
-Author(s):
-    Manuel Razo-Mejia
-Purpose:
-    This file compiles all of the relevant functions for plotting style
-    related to the evo_mcw project.
-"""
 
 # Default RP plotting style
 def pboc_style_mpl():

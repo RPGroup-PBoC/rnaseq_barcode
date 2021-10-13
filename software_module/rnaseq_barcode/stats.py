@@ -1,15 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Title:
-    stasts.py
-Last update:
-    2019-11-06:
-Author(s):
-    Manuel Razo-Mejia
-Purpose:
-    This file compiles all of the functions necessary for statistical
-    analysis of the data relevant for the channel capacity project
-"""
 
 import numpy as np
 

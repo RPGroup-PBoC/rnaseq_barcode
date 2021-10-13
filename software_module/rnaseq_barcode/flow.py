@@ -4,17 +4,7 @@ import pandas as pd
 from ._fit_bivariate_normal_AstroML import fit_bivariate_normal
 import scipy.stats
 
-"""
-Title:
-    viz.py
-Last update:
-    2019-05-10
-Author(s):
-    Courtesy of Griffin Chure
-Purpose:
-    This file compiles all of the relevant functions to process flow cytometry
-    files.
-"""
+
 
 def fit_2D_gaussian(df, x_val='FSC-H', y_val='SSC-H', log=False):
     '''
