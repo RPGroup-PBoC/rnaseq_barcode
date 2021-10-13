@@ -56,21 +56,23 @@ using FASTX, PyCall, LightXML, CodecZlib, BioSequences, DataFrames, CSV, Distrib
     files = glob.glob(processed_dir * "*fastq.gz")
 
 end
-Threads.@threads for file in files[1:2]
+Threads.@threads for file in files
+    println("Reading file $file...")
     r = FASTQ.Reader(GzipDecompressorStream(open(file)))
     seq_list = map(x -> get_seq(x), collect(r))#[1:n_samples])
-
+    
+    println("Extracting barcodes...")
     # Initialize dataframe to save sequences
     Names = [:id, :seq]
     df_seq = DataFrame(map(idx -> getindex.(seq_list, idx), eachindex(first(seq_list))), Names)
 
     # Add index and sequence length to dataframe
     df_seq[!, "seq_len"] = length.(seq_list)
-    first(df_seq, 5)
 
     # Extract barcode
     df_seq[!, "op_bc"] = map(x->x[1:20], df_seq[!, "seq"])
 
+    println("Extracting GFP barcodes...")
     df_seq[!, "gfp_bc"] = map(x->find_gfp_bc(x, ind_filter=27)[2], df_seq[!, "seq"])
     df_seq = dropmissing(df_seq, :gfp_bc)
 
@@ -80,7 +82,8 @@ Threads.@threads for file in files[1:2]
     # Define if barcode is present
     bc_bool = [String(x) in df_gfp[!, "gfp_barcode_revcomp"] for x in df_seq[!, "gfp_bc"]]
     df_seq_filt = df_seq[bc_bool, :]
-
+    
+    println("Writing file...")
     output_file_name = split(split(file, "/")[end], ".")[1]
-    CSV.write(outputdir * output_file_name * "_.csv", df_seq_filt)
+    CSV.write(outputdir * output_file_name * ".csv", df_seq_filt)
 end

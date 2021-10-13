@@ -224,8 +224,8 @@ class SimpleRepression(object):
             if type(pact) == bool:
                 pact = self.mwc.pact()
         # Compute repression and return inverse.
-        repression = (1 + pact * (self.R / self.n_ns) * np.exp(-self.ep_r))
-        return 1.16/(repression+0.16)
+        repression = (1 + 0.98 * (self.R / self.n_ns) * np.exp(-self.ep_r))
+        return 1.16/(repression+1.16)
 
     def saturation(self, wpa=True, num_pol=None, ep_pol=0):
         R"""
