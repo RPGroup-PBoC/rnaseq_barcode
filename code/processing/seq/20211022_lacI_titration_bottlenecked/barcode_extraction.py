@@ -10,7 +10,7 @@ import skbio
 import collections
 import git
 import rnaseq_barcode as rnaseq
-
+import multiprocessing
 #%%
 
 # Find home directory for repo

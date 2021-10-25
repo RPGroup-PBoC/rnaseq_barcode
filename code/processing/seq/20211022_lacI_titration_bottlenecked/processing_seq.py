@@ -3,45 +3,40 @@ import os
 import glob
 import pandas as pd
 import git
-
+import multiprocessing
 #%%
 # Date for sequencing run of the library to map
 DATE = 20211022
 # Description to be attached to folder names
-DESCRIPTION = 'lacI_titration_bottlenecked/'
+DESCRIPTION = '_lacI_titration_bottlenecked/'
 
 # Find project parental folder
 repo = git.Repo('./', search_parent_directories=True)
 homedir = repo.working_dir
 
 # Path to input folder
-INPUT_DIR = f'{homedir}/data/demux_sequencing/{DATE}_{DESCRIPTION}'
+datadir = homedir + f'/data/demux_sequencing/{DATE}{DESCRIPTION}'
 
-# Path to output folder
-OUTPUT_DIR = f'{homedir}/data/processed_sequencing/{DATE}_{DESCRIPTION}'
-
+# Find sequencing files
+files = glob.glob(datadir + '*.fastq.gz')
 # Generate output directory if it doesn't exist
+OUTPUT_DIR = homedir + f'/data/processed_sequencing/{DATE}{DESCRIPTION}'
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-#%%
-# Read list of demultiplexed sequences
-seq_table = pd.read_csv(INPUT_DIR + 'MANIFEST', comment="#")
-
 # Group sequences by index to feed them into the fastp
-seq_group = seq_table.groupby('sample-id')
 
-for group, seq in seq_group:
-    print(group)
-    # Extract file names
-    forward = seq[seq.direction == 'forward'].filename.values[0]
+
+def run_fastp(file):
     # Define inputs for fastp
-    in1 = f'{INPUT_DIR}{forward}'  # forward input read
-
+    in1 = file  # forward input read
+    name = file.split("/")[-1]
+    print(in1)
     # Define outputs
-    out1 = f'{OUTPUT_DIR}{forward}'  # reverse input read
-    html_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.html'
-    json_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.json'
+    out1 = f'{OUTPUT_DIR}{name}'
+    print(out1)
+    html_report = f'{OUTPUT_DIR}{DATE}_{name}_fastp_report.html'
+    json_report = f'{OUTPUT_DIR}{DATE}_{name}_fastp_report.json'
     report_title = f'{DATE}{DESCRIPTION} fastp report'
 
     # Define string to be ran on the terminal
@@ -58,3 +53,7 @@ for group, seq in seq_group:
 
     # Run program
     os.system(fastp)
+
+
+a_pool = multiprocessing.Pool(6)
+result = a_pool.map(run_fastp, files)

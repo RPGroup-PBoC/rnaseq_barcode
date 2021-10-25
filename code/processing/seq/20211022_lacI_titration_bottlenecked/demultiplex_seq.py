@@ -88,7 +88,7 @@ if not os.path.exists(artifact_file):
 
     # Run subprocess activating qiime2 conda environment
     print(f'generating qiime2 artifact on conda {CONDA_ENV} environment.')
-    subprocess.run(f'source activate {CONDA_ENV} && {bash_artifact}',
+    subprocess.run(f"bash -c 'source activate {CONDA_ENV} && {bash_artifact}'",
                    shell=True)
 
     # Rename files back to original name
@@ -124,7 +124,7 @@ print('checking if sequences have been demultiplexed already.')
 if not os.path.exists(demux_file):
     # Run subprocess activating qiime2 conda environment
     print(f'demultiplexing sequences.')
-    subprocess.run(f'source activate {CONDA_ENV} && {bash_demux}', shell=True)
+    subprocess.run(f"bash -c 'source activate {CONDA_ENV} && {bash_demux}'", shell=True)
     print('DONE!')
 #%%
 # Path to save interactive plots output for the analysis
@@ -143,7 +143,7 @@ bash_exp = f'''qiime tools export \
 print('checking if data has already been exported.')
 if not os.path.exists(demux_viz):
     print(f'generating interactive plots and exporting data.')
-    subprocess.run(f'source activate {CONDA_ENV} && {bash_viz} && {bash_exp}',
+    subprocess.run(f"bash -c 'source activate {CONDA_ENV} && {bash_viz} && {bash_exp}'",
                    shell=True)
 
 print('DONE!')
