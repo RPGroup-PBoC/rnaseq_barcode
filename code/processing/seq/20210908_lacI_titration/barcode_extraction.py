@@ -73,7 +73,7 @@ def analyze_file(file):
     ref_seq = "TTATTTGTACAGTT"
 
     # Find GFP barcodes and filter for correct location
-    gfp_bc_list = df_seq['sequence'].apply(rnaseq.seq.find_gfp_bc, args=(ref_seq, 26, 1))
+    gfp_bc_list = df_seq['sequence'].apply(rnaseq.seq.find_bc, args=(ref_seq, 26, 1))
     df_seq['gfp_idc'], df_seq['gfp_bc'] = zip(*gfp_bc_list)
     df_seq.head()
     
