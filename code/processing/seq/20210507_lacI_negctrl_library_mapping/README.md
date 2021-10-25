@@ -30,10 +30,3 @@ Paired-ends reads, 150 cycles fwd and reverse. Index was also read.
 | Negative_controls | CACAGT | SC81/GU80 | Transcriptionally silent controls |
 | LacO1_mutants | ATGGCT | SC82/GU81 | LacUV5 + LacO1 mutants |
 | WT_LacO1/2/3 | CGAGAT | SC83/GU82 | LacUV5 + WT LacO1/2/3 |
-
-## Notes and Observations
-
-
-## Library Preparation
-
-Library prep detailed in this benchling doc. Will add more here later
