@@ -137,7 +137,7 @@ def find_bc(
     match = [m.span() for m in reg]
 
     # 
-    if type(ind_filter) not in [list, np.ndarray]:
+    if ind_filter != None and type(ind_filter) not in [list, np.ndarray]:
         ind_filter = [ind_filter]
     
     # Rules for lack of match
@@ -145,21 +145,25 @@ def find_bc(
         idx = np.nan
         bc = np.nan
     else:
-        if ind_filter != None:
-            if match[0][0] - barcode_length not in ind_filter:
-                idx = np.nan
-                bc = np.nan
-            else:
-                if direction == 'down':
+        if direction == "down":
+            if ind_filter != None:
+                if match[0][0] - barcode_length not in ind_filter:
+                    idx = np.nan
+                    bc = np.nan
+                else:
                     idx = match[0][0] - barcode_length
                     bc = seq[match[0][0] - barcode_length : match[0][0]]
+            else:
+                idx = match[0][0] - barcode_length
+                bc = seq[match[0][0] - barcode_length : match[0][0]]
+        else:
+            if ind_filter != None:
+                if match[0][0]  not in ind_filter:
+                    idx = np.nan
+                    bc = np.nan
                 else:
                     idx = match[0][0]
                     bc = seq[match[0][0] : match[0][0] + barcode_length]
-        else:
-            if direction == 'down':
-                idx = match[0][0] - barcode_length
-                bc = seq[match[0][0] - barcode_length : match[0][0]]
             else:
                 idx = match[0][0]
                 bc = seq[match[0][0] : match[0][0] + barcode_length]
