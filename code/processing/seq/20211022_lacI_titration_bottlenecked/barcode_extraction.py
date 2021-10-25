@@ -73,31 +73,43 @@ for i, f in enumerate(metadata.filename):
     df_seq["seq_len"] = df_seq.sequence.apply(len)
 
     print("Mapping operator and GFP barcode")
-    # Extract barcode
-    df_seq = df_seq.assign(op_bc=[x[0:20] for x in df_seq.sequence])
 
     # Define sequence next to GFP barcode
-    ref_seq = "TTATTTGTACAGTT"
+    ref_seq = "TAAATCCCACCCGATG"
 
     # Initialize list to save index positions
     gfp_idx = list()
     gfp_bc = list()
+    op_bc = list()
+
+    RNA = False
+    if "RNA" in metadata.filename:
+        RNA = True
+        UMI_list = list()
+
     # Iterate over sequences and define the position of the barcode sequence
     for i, row in df_seq.iterrows():
-        # Define regular expression to find sequence
+        # Define regular expression to find sequence 
         reg = regex.finditer(f"({ref_seq})" + "{e<=0}", row.sequence)
         # Extract the span for where the sequences was located
         match = [m.span() for m in reg]
         # Rules for lack of match
         if len(match) == 0:
             gfp_idx.append(np.nan)
-            gfp_bc.append("NNNNN")
+            gfp_bc.append("NNNN")
+            op_bc.append(20*"N")
         # Rules for when there is a match
         else:
-            gfp_idx.append(match[0][0] - 5)
-            gfp_bc.append(row.sequence[match[0][0] - 5 : match[0][0]])
+            gfp_idx.append(match[0][1] + 34)
+            gfp_bc.append(row.sequence[match[0][1] +34: match[0][1]+39])
+            op_bc.append(row.sequence[match[0][1] +8: match[0][1]+29])
+            if RNA:
+                UMI_list.append(row.sequence[0:10])
 
-    df_seq = df_seq.assign(gfp_bc=gfp_bc, gfp_idx=gfp_idx)
+    if RNA:
+        df_seq = df_seq.assign(gfp_bc=gfp_bc, gfp_idx=gfp_idx, op_bc=op_bc, UMI=UMI_list)
+    else:
+        df_seq = df_seq.assign(gfp_bc=gfp_bc, gfp_idx=gfp_idx, op_bc=op_bc)
 
     print("Applying barcode length and position filter")
     # Filter by position of GFP barcode
