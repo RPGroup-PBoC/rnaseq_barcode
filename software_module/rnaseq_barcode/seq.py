@@ -162,11 +162,11 @@ def find_bc(
                     idx = np.nan
                     bc = np.nan
                 else:
-                    idx = match[0][0]
-                    bc = seq[match[0][0] : match[0][0] + barcode_length]
+                    idx = match[0][1] + 1
+                    bc = seq[match[0][1] : match[0][1] + barcode_length]
             else:
-                idx = match[0][0]
-                bc = seq[match[0][0] : match[0][0] + barcode_length]
+                idx = match[0][1] + 1
+                bc = seq[match[0][1] : match[0][1] + barcode_length]
 
     return idx, bc
 
