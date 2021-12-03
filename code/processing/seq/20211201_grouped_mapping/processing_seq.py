@@ -6,9 +6,9 @@ import git
 
 #%%
 # Date for sequencing run of the library to map
-DATE = 20210507
+DATE = 20211201
 # Description to be attached to folder names
-DESCRIPTION = '_lacI_negctrl_library_mapping/'
+DESCRIPTION = '_grouped_mapping/'
 
 # Find project parental folder
 repo = git.Repo('./', search_parent_directories=True)
@@ -44,11 +44,7 @@ for group, seq in seq_group:
     html_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.html'
     json_report = f'{OUTPUT_DIR}{DATE}_{group}_fastp_report.json'
     report_title = f'{DATE}{DESCRIPTION} fastp report'
-    
-    if "negctrl" in group:
-        overlap = 50
-    else:
-        overlap = 100
+
     # Define string to be ran on the terminal
     fastp = f'''fastp \
         --in1 {in1} \
@@ -59,6 +55,7 @@ for group, seq in seq_group:
         --verbose \
         --disable_length_filtering \
         --correction \
+        --trim_front 24\
         --html {html_report} \
         --json {json_report} \
         --report_title "{html_report}" \
